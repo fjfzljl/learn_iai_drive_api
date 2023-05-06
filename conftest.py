@@ -45,27 +45,12 @@ def pytest_runtest_makereport(item, call):
 def suite_setupteardown():
     logging.info("suite_setupteardown fixture start...")
 
-    logging.info("software install ...")
-
+    #API key:
     iai.add_apikey("mZHY4zRJkJ557Aut85Q8T2pSFELU05Tn7LMrqxgu")
 
 
     yield
 
-    logging.info("software uninstall...")
-
 
     logging.info("suite_setupteardown fixture end...")
 
-
-@pytest.fixture
-def eachtest_setupteardown():
-    logging.info("eachtest_setupteardown fixture start...")
-
-    logging.info("change system configuration...")
-
-    yield
-
-    logging.info("recover system configuration...")
-
-    logging.info("eachtest_setupteardown fixture end...")
