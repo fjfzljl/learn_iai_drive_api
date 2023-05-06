@@ -276,6 +276,80 @@ def test_speed(
     actual_result = verify_drive(location, agent_states, agent_attributes, recurrent_states)
     assert actual_result == expected_result
 
+@pytest.mark.TEST00211
+@pytest.mark.TEST00212
+@pytest.mark.TEST00213
+@pytest.mark.parametrize(
+    "dstring, location, agent_states, agent_attributes, recurrent_states, expected_result",    
+    [
+        (
+            "TEST00211 : Verify orientation 0",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [AgentState(center=Point(x=-11.25, y=-15.48), orientation=0, speed=0.02)],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
+            Drive_OK,
+        ),
+        (
+            "TEST00212 : Verify orientation negative",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [AgentState(center=Point(x=-11.25, y=-15.48), orientation=-9999, speed=0.02)],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
+            Drive_OK,
+        ),
+        (
+            "TEST00213 : Verify orientation large",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [AgentState(center=Point(x=-11.25, y=-15.48), orientation=999999999999999, speed=0.02)],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
+            Drive_OK,
+        ),
+    ],
+)
+def test_orientation(
+    suite_setupteardown,
+    dstring,
+    location,
+    agent_states,
+    agent_attributes,
+    recurrent_states,
+    expected_result,
+):
+    test_orientation.__doc__ = dstring
+    actual_result = verify_drive(location, agent_states, agent_attributes, recurrent_states)
+    assert actual_result == expected_result
+
+
+@pytest.mark.TEST00221
+@pytest.mark.parametrize(
+    "dstring, location, agent_states, agent_attributes, recurrent_states, expected_result",    
+    [
+        (
+            "TEST00221 : Verify point x 0",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [AgentState(center=Point(x=0, y=-15.48), orientation=0.39, speed=0.02)],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
+            Drive_OK,
+        ),
+    ],
+)
+def test_point(
+    suite_setupteardown,
+    dstring,
+    location,
+    agent_states,
+    agent_attributes,
+    recurrent_states,
+    expected_result,
+):
+    test_point.__doc__ = dstring
+    actual_result = verify_drive(location, agent_states, agent_attributes, recurrent_states)
+    assert actual_result == expected_result
+
+
 @pytest.mark.TEST99999
 @pytest.mark.parametrize(
     "dstring",
