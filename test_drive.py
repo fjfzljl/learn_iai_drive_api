@@ -739,6 +739,53 @@ def test_traffic_light(
     assert actual_result == expected_result
 
 
+@pytest.mark.TEST01101
+@pytest.mark.TEST01102
+@pytest.mark.parametrize(
+    "dstring, agent_count, traffic_lights_states, get_birdview, rendering_center, rendering_fov, get_infractions, random_seed, expected_result",    
+    # "dstring, agent_count, get_birdview, expected_result",    
+    [
+        (
+            "TEST01101 : Verify 2 NPCs with get_birdview False",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            None,
+            None,
+            False,
+            None,
+            Drive_OK,
+        ),
+        (
+            "TEST01102 : Verify 2 NPCs with get_birdview True",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            None,
+            None,
+            False,
+            None,
+            Drive_OK,
+        ),
+    ],
+)
+def test_get_birdview(
+    suite_setupteardown,
+    dstring,
+    agent_count, 
+    traffic_lights_states,get_birdview,
+    rendering_center, rendering_fov, get_infractions, random_seed, 
+    expected_result,
+):
+    test_get_birdview.__doc__ = dstring
+    actual_result = verify_drive_optional(
+    agent_count, 
+    traffic_lights_states,get_birdview,
+    rendering_center, rendering_fov, get_infractions, random_seed)
+    assert actual_result == expected_result
+
+
+
 @pytest.mark.TEST99999
 @pytest.mark.parametrize(
     "dstring",
