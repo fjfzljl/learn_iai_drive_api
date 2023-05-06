@@ -90,7 +90,7 @@ def test_location(
     "dstring, location, agent_states, agent_attributes, recurrent_states, expected_result",    
     [
         (
-            "TEST00003 : Verify multiple AgentState",
+            "TEST00003 : Verify multiple AgentState: 2",
             "canada:vancouver:drake_street_and_pacific_blvd",
             [AgentState(center=Point(x=-38.0, y=-24.35), orientation=0.42, speed=10.09), AgentState(center=Point(x=17.64, y=11.37), orientation=-2.72, speed=0.74)],
             [AgentAttributes(length=4.94, width=2.02, rear_axis_offset=1.58), AgentAttributes(length=4.98, width=2.0, rear_axis_offset=1.6)],
@@ -128,6 +128,43 @@ def test_agentstate(
     actual_result = verify_drive(location, agent_states, agent_attributes, recurrent_states)
     assert actual_result == expected_result
 
+
+
+@pytest.mark.TEST00006
+@pytest.mark.TEST00007
+@pytest.mark.parametrize(
+    "dstring, location, agent_states, agent_attributes, recurrent_states, expected_result",    
+    [
+        (
+            "TEST00006 : Verify crash: RecurrentState: empty",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [AgentState(center=Point(x=-11.25, y=-15.48), orientation=0.39, speed=0.02)],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [],
+            Drive_Crash,
+        ),
+        (
+            "TEST00007 : Verify crash: AgentState: empty, AgentAttributes: empty, RecurrentState: empty",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [],
+            [],
+            [],
+            Drive_Crash,
+        ),
+    ],
+)
+def test_RecurrentState(
+    suite_setupteardown,
+    dstring,
+    location,
+    agent_states,
+    agent_attributes,
+    recurrent_states,
+    expected_result,
+):
+    test_RecurrentState.__doc__ = dstring
+    actual_result = verify_drive(location, agent_states, agent_attributes, recurrent_states)
+    assert actual_result == expected_result
 
 
 @pytest.mark.TEST99999
