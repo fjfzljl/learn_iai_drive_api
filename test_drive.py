@@ -7,8 +7,10 @@ import imageio
 from typing import NamedTuple
 
 import invertedai as iai
-from invertedai.api.drive import DriveResponse, drive
-from invertedai.common import AgentState, RecurrentState, AgentAttributes, Point
+# from invertedai.api.drive import DriveResponse
+from invertedai.common import AgentState, RecurrentState, AgentAttributes, Point, TrafficLightState
+# from invertedai.api import TrafficLightState
+
 
 # from libs.login_page import *
 
@@ -37,13 +39,16 @@ def verify_drive(location, agent_states, agent_attributes, recurrent_states):
             agent_states=agent_states,
             recurrent_states=recurrent_states,
         )
-        logger.info(f'drive return response')
-        assert isinstance(response, iai.api.DriveResponse)
 
     except Exception as e:
         logger.error(f"Exception : {e}")
         return Drive_Crash
 
+    logger.info(f'drive return response')
+    assert isinstance(response, iai.api.DriveResponse)
+    assert len(response.agent_states) == len(agent_states)
+    assert len(response.recurrent_states) == len(recurrent_states)
+    
     return Drive_OK
     
 
@@ -547,6 +552,168 @@ def test_rear_axis_offset(
     test_rear_axis_offset.__doc__ = dstring
     actual_result = verify_drive(location, agent_states, agent_attributes, recurrent_states)
     assert actual_result == expected_result
+
+
+def verify_drive_optional(
+    agent_count, 
+    traffic_lights_states,get_birdview,
+    rendering_center, rendering_fov, get_infractions, random_seed, 
+):
+    location = "canada:vancouver:drake_street_and_pacific_blvd"  # select one of available locations
+
+    location_info_response = iai.location_info(location=location)
+
+    # get traffic light states
+    light_response = iai.light(location=location)
+
+    # initialize the simulation by spawning NPCs
+    response = iai.initialize(
+        location=location,  # select one of available locations
+        agent_count=agent_count,    # number of NPCs to spawn
+        get_birdview=True,  # provides simple visualization - don't use in production
+        traffic_light_state_history=[light_response.traffic_lights_states],  # provide traffic light states
+    )
+    agent_attributes = response.agent_attributes  # get dimension and other attributes of NPCs
+    agent_states = response.agent_states
+    recurrent_states = response.recurrent_states
+    # images = [response.birdview.decode()]  # images storing visualizations of subsequent states
+    # for _ in range(1):  # how many simulation steps to execute (10 steps is 1 second)
+
+        # get next traffic light state
+    # light_response = iai.light(location=location, recurrent_states=light_response.recurrent_states)
+
+        # query the API for subsequent NPC predictions
+    logger.info(f'drive location : {location}')
+    logger.info(f'drive agent_attributes : {agent_attributes}')
+    logger.info(f'drive agent_states : {agent_states}')
+    logger.info(f'drive recurrent_states : {recurrent_states}')
+
+    logger.info(f'drive get_birdview : {get_birdview}')
+    logger.info(f'drive traffic_lights_states : {traffic_lights_states}')
+    logger.info(f'drive rendering_center : {rendering_center}')
+    logger.info(f'drive rendering_fov : {rendering_fov}')
+    logger.info(f'drive get_infractions : {get_infractions}')
+    logger.info(f'drive random_seed : {random_seed}')
+            
+    try:
+        response = iai.drive(
+            location=location,
+            agent_attributes=agent_attributes,
+            agent_states=response.agent_states,
+            recurrent_states=response.recurrent_states,
+            traffic_lights_states=traffic_lights_states,
+            get_birdview=get_birdview,
+            rendering_center=rendering_center,
+            rendering_fov=rendering_fov,
+            get_infractions=get_infractions,
+            random_seed=random_seed,
+        )
+    except Exception as e:
+        logger.error(f"Exception : {e}")
+        return Drive_Crash    
+
+    logger.info(f'drive return response')
+    assert isinstance(response, iai.api.DriveResponse)
+    assert len(response.agent_states) == len(agent_states)
+    assert len(response.recurrent_states) == len(recurrent_states)
+    
+    return Drive_OK
+
+
+
+@pytest.mark.TEST01001
+@pytest.mark.TEST01002
+@pytest.mark.TEST01003
+@pytest.mark.TEST01004
+@pytest.mark.TEST01005
+@pytest.mark.TEST01006
+@pytest.mark.parametrize(
+    "dstring, agent_count, traffic_lights_states, get_birdview, rendering_center, rendering_fov, get_infractions, random_seed, expected_result",    
+    # "dstring, agent_count, get_birdview, expected_result",    
+    [
+        (
+            "TEST01001 : Verify 2 NPCs with traffic none",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            None,
+            None,
+            False,
+            None,
+            Drive_OK,
+        ),
+        (
+            "TEST01002 : Verify 2 NPCs with traffic green",
+            2,
+            {103760: TrafficLightState.green, 103761: TrafficLightState.green, 103762: TrafficLightState.green},
+            True,
+            None,
+            None,
+            False,
+            None,
+            Drive_OK,
+        ),
+        (
+            "TEST01003 : Verify 2 NPCs with traffic yellow",
+            2,
+            {103760: TrafficLightState.yellow, 103761: TrafficLightState.yellow, 103762: TrafficLightState.yellow},
+            True,
+            None,
+            None,
+            False,
+            None,
+            Drive_OK,
+        ),
+        (
+            "TEST01004 : Verify 2 NPCs with traffic red",
+            2,
+            {103760: TrafficLightState.red, 103761: TrafficLightState.red, 103762: TrafficLightState.red},
+            True,
+            None,
+            None,
+            False,
+            None,
+            Drive_OK,
+        ),
+        (
+            "TEST01005 : Verify 2 NPCs with traffic empty",
+            2,
+            {},
+            True,
+            None,
+            None,
+            False,
+            None,
+            Drive_OK,
+        ),
+        (
+            "TEST01006 : Verify crash: 2 NPCs with traffic invalid id",
+            2,
+            {1: TrafficLightState.red, 103761: TrafficLightState.red, 103762: TrafficLightState.red},
+            True,
+            None,
+            None,
+            False,
+            None,
+            Drive_Crash,
+        ),
+    ],
+)
+def test_traffic_light(
+    suite_setupteardown,
+    dstring,
+    agent_count, 
+    traffic_lights_states,get_birdview,
+    rendering_center, rendering_fov, get_infractions, random_seed, 
+    expected_result,
+):
+    test_traffic_light.__doc__ = dstring
+    actual_result = verify_drive_optional(
+    agent_count, 
+    traffic_lights_states,get_birdview,
+    rendering_center, rendering_fov, get_infractions, random_seed)
+    assert actual_result == expected_result
+
 
 @pytest.mark.TEST99999
 @pytest.mark.parametrize(
