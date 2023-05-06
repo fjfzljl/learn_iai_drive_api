@@ -37,7 +37,7 @@ def verify_drive(location, agent_states, agent_attributes, recurrent_states):
             agent_states=agent_states,
             recurrent_states=recurrent_states,
         )
-
+        logger.info(f'drive return response')
         assert isinstance(response, iai.api.DriveResponse)
 
     except Exception as e:
@@ -48,7 +48,6 @@ def verify_drive(location, agent_states, agent_attributes, recurrent_states):
     
 
 @pytest.mark.TEST00001
-@pytest.mark.TEST00002
 @pytest.mark.parametrize(
     "dstring, location, agent_states, agent_attributes, recurrent_states, expected_result",    
     [
@@ -59,14 +58,6 @@ def verify_drive(location, agent_states, agent_attributes, recurrent_states):
             [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
             [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
             Drive_OK,
-        ),
-        (
-            "TEST00002 : Verify crash: invalid location",
-            "canada:vancouver:drake_street_and_pacific_bl",
-            [AgentState(center=Point(x=-11.25, y=-15.48), orientation=0.39, speed=0.02)],
-            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
-            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
-            Drive_Crash,
         ),
     ],
 )
@@ -80,6 +71,33 @@ def test_location(
     expected_result,
 ):
     test_location.__doc__ = dstring
+    actual_result = verify_drive(location, agent_states, agent_attributes, recurrent_states)
+    assert actual_result == expected_result
+
+@pytest.mark.TEST00002
+@pytest.mark.parametrize(
+    "dstring, location, agent_states, agent_attributes, recurrent_states, expected_result",    
+    [
+        (
+            "TEST00002 : Verify crash: invalid location",
+            "canada:vancouver:drake_street_and_pacific_bl",
+            [AgentState(center=Point(x=-11.25, y=-15.48), orientation=0.39, speed=0.02)],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
+            Drive_Crash,
+        ),
+    ],
+)
+def test_invalid_location(
+    suite_setupteardown,
+    dstring,
+    location,
+    agent_states,
+    agent_attributes,
+    recurrent_states,
+    expected_result,
+):
+    test_invalid_location.__doc__ = dstring
     actual_result = verify_drive(location, agent_states, agent_attributes, recurrent_states)
     assert actual_result == expected_result
 
@@ -166,6 +184,97 @@ def test_RecurrentState(
     actual_result = verify_drive(location, agent_states, agent_attributes, recurrent_states)
     assert actual_result == expected_result
 
+
+@pytest.mark.TEST00101
+@pytest.mark.parametrize(
+    "dstring, location, agent_states, agent_attributes, recurrent_states, expected_result",    
+    [
+        (
+            "TEST00101 : Verify crash: agent invalid format",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [{'x': 0, 'y': 0, 'orientation': 0, 'speed': 5}],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
+            Drive_Crash,
+        ),
+    ],
+)
+def test_AgentState_invalid(
+    suite_setupteardown,
+    dstring,
+    location,
+    agent_states,
+    agent_attributes,
+    recurrent_states,
+    expected_result,
+):
+    test_AgentState_invalid.__doc__ = dstring
+    actual_result = verify_drive(location, agent_states, agent_attributes, recurrent_states)
+    assert actual_result == expected_result
+
+
+@pytest.mark.TEST00201
+@pytest.mark.TEST00202
+@pytest.mark.TEST00203
+@pytest.mark.TEST00204
+@pytest.mark.TEST00205
+@pytest.mark.parametrize(
+    "dstring, location, agent_states, agent_attributes, recurrent_states, expected_result",    
+    [
+        (
+            "TEST00201 : Verify valid speed",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [AgentState(center=Point(x=-11.25, y=-15.48), orientation=0.39, speed=10)],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
+            Drive_OK,
+        ),
+        (
+            "TEST00202 : Verify large speed",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [AgentState(center=Point(x=-11.25, y=-15.48), orientation=0.39, speed=99999999999999999999999)],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
+            Drive_OK,
+        ),
+        (
+            "TEST00203 : Verify speed 0",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [AgentState(center=Point(x=-11.25, y=-15.48), orientation=0.39, speed=0)],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
+            Drive_OK,
+        ),
+        (
+            "TEST00204 : Verify speed negative",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [AgentState(center=Point(x=-11.25, y=-15.48), orientation=0.39, speed=-0.02)],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
+            Drive_OK,
+        ),
+        (
+            "TEST00205 : Verify speed negative large",
+            "canada:vancouver:drake_street_and_pacific_blvd",
+            [AgentState(center=Point(x=-11.25, y=-15.48), orientation=0.39, speed=-999999999999999)],
+            [AgentAttributes(length=4.93, width=2.0, rear_axis_offset=1.58)],
+            [RecurrentState(packed=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -11.248814582824707, -15.482272148132324, 0.3917691707611084, 0.01937323808670044])],
+            Drive_OK,
+        ),
+    ],
+)
+def test_speed(
+    suite_setupteardown,
+    dstring,
+    location,
+    agent_states,
+    agent_attributes,
+    recurrent_states,
+    expected_result,
+):
+    test_speed.__doc__ = dstring
+    actual_result = verify_drive(location, agent_states, agent_attributes, recurrent_states)
+    assert actual_result == expected_result
 
 @pytest.mark.TEST99999
 @pytest.mark.parametrize(
