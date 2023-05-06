@@ -23,7 +23,6 @@ LOGIN_SUCCESS = StatusCode(1, 'login successfully')
 def verify_login(suite_setupteardown, eachtest_setupteardown, usernm, passwd, err_msg):
     location = "canada:vancouver:drake_street_and_pacific_blvd"  # select one of available locations
 
-    #API key:
     # iai.add_apikey("mZHY4zRJkJ557Aut85Q8T2pSFELU05Tn7LMrqxgu")
 
     # get static information about a given location including map in osm
@@ -49,6 +48,13 @@ def verify_login(suite_setupteardown, eachtest_setupteardown, usernm, passwd, er
         light_response = iai.light(location=location, recurrent_states=light_response.recurrent_states)
 
         # query the API for subsequent NPC predictions
+        logger.info(f'drive location : {location}')
+        logger.info(f'drive agent_attributes : {agent_attributes}')
+        logger.info(f'drive agent_states : {response.agent_states}')
+        logger.info(f'drive recurrent_states : {response.recurrent_states}')
+        logger.info(f'drive get_birdview : True')
+        logger.info(f'drive traffic_lights_states : {light_response.traffic_lights_states}')
+        
         response = iai.drive(
             location=location,
             agent_attributes=agent_attributes,
@@ -58,7 +64,7 @@ def verify_login(suite_setupteardown, eachtest_setupteardown, usernm, passwd, er
             traffic_lights_states=light_response.traffic_lights_states,
         )
 
-        logger.info(f'response : {response}')
+        # logger.info(f'drive response : {response}')
 
         # save the visualization - requires np and cv2
         # images.append(response.birdview.decode())
