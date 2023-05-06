@@ -627,6 +627,8 @@ def verify_drive_optional(
 @pytest.mark.TEST01004
 @pytest.mark.TEST01005
 @pytest.mark.TEST01006
+@pytest.mark.TEST01007
+@pytest.mark.TEST01008
 @pytest.mark.parametrize(
     "dstring, agent_count, traffic_lights_states, get_birdview, rendering_center, rendering_fov, get_infractions, random_seed, expected_result",    
     # "dstring, agent_count, get_birdview, expected_result",    
@@ -687,9 +689,31 @@ def verify_drive_optional(
             Drive_OK,
         ),
         (
-            "TEST01006 : Verify crash: 2 NPCs with traffic invalid id",
+            "TEST01006 : Verify 2 NPCs with traffic yellow switch to red",
+            2,
+            {103760: TrafficLightState.yellow, 103761: TrafficLightState.red, 103762: TrafficLightState.red},
+            True,
+            None,
+            None,
+            False,
+            None,
+            Drive_OK,
+        ),
+        (
+            "TEST01007 : Verify crash: 2 NPCs with traffic invalid id",
             2,
             {1: TrafficLightState.red, 103761: TrafficLightState.red, 103762: TrafficLightState.red},
+            True,
+            None,
+            None,
+            False,
+            None,
+            Drive_Crash,
+        ),
+        (
+            "TEST01008 : Verify crash: 2 NPCs with traffic invalid format",
+            2,
+            {103760: 'y'},
             True,
             None,
             None,
