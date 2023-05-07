@@ -932,6 +932,97 @@ def test_rendering_center(
     rendering_center, rendering_fov, get_infractions, random_seed)
     assert actual_result == expected_result
 
+@pytest.mark.TEST01401
+@pytest.mark.TEST01402
+@pytest.mark.TEST01403
+@pytest.mark.TEST01404
+@pytest.mark.TEST01405
+@pytest.mark.parametrize(
+    "dstring, agent_count, traffic_lights_states, get_birdview, rendering_center, rendering_fov, get_infractions, random_seed, expected_result",    
+    [
+        (
+            "TEST01401 : Verify 2 NPCs with rendering_center",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            (1.0, 2.0),
+            10.75,
+            True,
+            None,
+            Drive_OK,
+        ),
+        (
+            "TEST01402 : Verify 2 NPCs with rendering_center negative",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            (1.0, 2.0),
+            -10.75,
+            True,
+            None,
+            Drive_OK,
+        ),
+        (
+            "TEST01403 : Verify 2 NPCs with rendering_center large",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            (1.0, 2.0),
+            99999.75,
+            True,
+            None,
+            Drive_OK,
+        ),
+        (
+            "TEST01404 : Verify 2 NPCs with rendering_center '9999099.087654'",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            (1.0, 2.0),
+            '9999099.087654',
+            True,
+            None,
+            Drive_OK,
+        ),
+        (
+            "TEST01405 : Verify crash: 2 NPCs with rendering_center 0",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            (1.0, 2.0),
+            0,
+            True,
+            None,
+            Drive_Crash,
+        ),
+        (
+            "TEST01406 : Verify crash: 2 NPCs with rendering_center invalid format",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            (1.0, 2.0),
+            'a',
+            True,
+            None,
+            Drive_Crash,
+        ),
+    ],
+)
+def test_rendering_fov(
+    suite_setupteardown,
+    dstring,
+    agent_count, 
+    traffic_lights_states,get_birdview,
+    rendering_center, rendering_fov, get_infractions, random_seed, 
+    expected_result,
+):
+    test_rendering_fov.__doc__ = dstring
+    actual_result = verify_drive_optional(
+    agent_count, 
+    traffic_lights_states,get_birdview,
+    rendering_center, rendering_fov, get_infractions, random_seed)
+    assert actual_result == expected_result
+
 
 
 @pytest.mark.TEST99999
