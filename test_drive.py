@@ -1024,6 +1024,86 @@ def test_rendering_fov(
     assert actual_result == expected_result
 
 
+@pytest.mark.TEST01501
+@pytest.mark.TEST01502
+@pytest.mark.TEST01503
+@pytest.mark.TEST01504
+@pytest.mark.TEST01505
+@pytest.mark.parametrize(
+    "dstring, agent_count, traffic_lights_states, get_birdview, rendering_center, rendering_fov, get_infractions, random_seed, expected_result",    
+    [
+        (
+            "TEST01501 : Verify 2 NPCs with random_seed",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            (1.0, 2.0),
+            10.75,
+            True,
+            108987,
+            Drive_OK,
+        ),
+        (
+            "TEST01502 : Verify 2 NPCs with random_seed 0",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            (1.0, 2.0),
+            10.75,
+            True,
+            0,
+            Drive_OK,
+        ),
+        (
+            "TEST01503 : Verify crash: 2 NPCs with random_seed negative",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            (1.0, 2.0),
+            10.75,
+            True,
+            -987,
+            Drive_Crash,
+        ),
+        (
+            "TEST01504 : Verify crash: 2 NPCs with random_seed big large 899999999999",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            (1.0, 2.0),
+            10.75,
+            True,
+            899999999999,
+            Drive_Crash,
+        ),
+        (
+            "TEST01505 : Verify crash: 2 NPCs with random_seed invalid format",
+            2,
+            {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
+            True,
+            (1.0, 2.0),
+            10.75,
+            True,
+            'ab',
+            Drive_Crash,
+        ),
+    ],
+)
+def test_random_seed(
+    suite_setupteardown,
+    dstring,
+    agent_count, 
+    traffic_lights_states,get_birdview,
+    rendering_center, rendering_fov, get_infractions, random_seed, 
+    expected_result,
+):
+    test_random_seed.__doc__ = dstring
+    actual_result = verify_drive_optional(
+    agent_count, 
+    traffic_lights_states,get_birdview,
+    rendering_center, rendering_fov, get_infractions, random_seed)
+    assert actual_result == expected_result
+
 
 @pytest.mark.TEST99999
 @pytest.mark.parametrize(
