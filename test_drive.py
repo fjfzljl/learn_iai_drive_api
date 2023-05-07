@@ -23,9 +23,7 @@ class ResultCode(NamedTuple):
 
 Drive_OK = ResultCode(1, 'return class DriveResponse')
 Drive_Crash = ResultCode(2, 'api iai.drive crash')
-
-
-
+# Drive_OK_Contains_Fail = ResultCode(3, 'class DriveResponse contains birdview or infractions fail')
 
 def verify_drive(location, agent_states, agent_attributes, recurrent_states):
     logger.info(f'drive location : {location}')
@@ -44,7 +42,7 @@ def verify_drive(location, agent_states, agent_attributes, recurrent_states):
         logger.error(f"Exception : {e}")
         return Drive_Crash
 
-    logger.info(f'drive return response')
+    logger.info(f'drive return response : {response}')
     assert isinstance(response, iai.api.DriveResponse)
     assert len(response.agent_states) == len(agent_states)
     assert len(response.recurrent_states) == len(recurrent_states)
@@ -612,10 +610,21 @@ def verify_drive_optional(
         logger.error(f"Exception : {e}")
         return Drive_Crash    
 
-    logger.info(f'drive return response')
+    logger.info(f'drive return response : {response}')
     assert isinstance(response, iai.api.DriveResponse)
     assert len(response.agent_states) == len(agent_states)
     assert len(response.recurrent_states) == len(recurrent_states)
+    
+    if get_birdview:
+        assert response.birdview.encoded_image
+        
+    else:
+        assert not response.birdview.encoded_image
+            
+    if get_infractions:
+        assert len(response.infractions) > 0
+    else:
+        assert len(response.infractions) == 0
     
     return Drive_OK
 
@@ -749,7 +758,7 @@ def test_traffic_light(
             "TEST01101 : Verify 2 NPCs with get_birdview False",
             2,
             {103760: TrafficLightState.none, 103761: TrafficLightState.none, 103762: TrafficLightState.none},
-            True,
+            False,
             None,
             None,
             False,
